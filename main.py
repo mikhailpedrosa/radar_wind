@@ -17,6 +17,9 @@ if __name__ == '__main__':
     r = 1
 
     radar = read_radar()
+
+    print radar.info()
+    #exit()
     start = datetime.datetime.now()
     #u, v = vap(radar)
     #np.save('vectoru', u)
@@ -24,13 +27,14 @@ if __name__ == '__main__':
     u1 = np.load('vectoru.npy')
     v1 = np.load('vectorv.npy')
     dif = datetime.datetime.now() - start
-    print '%i s' % dif.seconds
+
     #plot_image_no_map(radar)
     #plot_image_map(radar)
     #plot_graph_lines_no_filters(radar, r)
     #plot_graph_points_no_filters(radar, r)
-    #plot_graph_lines_filters(radar, r)
-    #plot_graph_points_filters(radar, r)
-    plot_graph(radar, r)
+    plot_graph_lines_filters(radar, r)
+    plot_graph_points_filters(radar, r)
+    #plot_graph(radar, r)
     #plot_vector_quiver(radar, r, u1, v1)
     #plot_vector_barbs(radar, r, u, v)
+    print '%i s' % dif.seconds

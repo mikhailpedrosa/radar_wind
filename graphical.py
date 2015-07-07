@@ -32,6 +32,7 @@ def plot_image_no_map(radar):
     #display.plot_cross_hair(radar.latitude['data'], radar.longitude['data'] )
     #display.plot_point(radar.longitude['data'][0], radar.latitude['data'][0])
     #plt.show()
+    plt.title("Funceme - Radar Qxb Band S \n Time: {:}".format(radar.time['units']))
     plt.savefig('Radar_Qxb_Band_S - Image Velocity Wind (No Map).png', format='png')
     plt.close()
 
@@ -60,13 +61,13 @@ def plot_graph_points_no_filters(radar, r):
     plt.grid()
     plt.ylim(-35.,35.)
     plt.xlim(0,360)
-    plt.title("Radar Quixeramobim - Velocity x Azimuth - ({:.2f} km Range)".format((r*1490)/1000.), fontstyle='italic')
-    plt.ylabel('Velocity (m/s)')
+    plt.title("Radar Qxb Band S - Velocity x Azimuth - ({:.2f} km Range)".format((r*1498)/1000.), fontstyle='italic')
+    plt.ylabel('Radial Velocity (m/s)')
     ax.set_xlabel('Azimuth (degree)')
     ax.xaxis.set_label_coords(0.5,-0.05)
     plt.legend(fontsize='10')
     #plt.show()
-    plt.savefig("Radar_Qxb_Band_S - Velocity x Azimuth - ({:.2f} km Range) - Points (No Filter).png".format((r*1490)/1000.), format='png')
+    plt.savefig("Radar_Qxb_Band_S - Velocity x Azimuth - ({:.2f} km Range) - Points (No Filter).png".format((r*1498)/1000.), format='png')
     plt.close()
 
 #@profile()
@@ -93,13 +94,13 @@ def plot_graph_lines_no_filters(radar, r):
     plt.grid()
     plt.ylim(-35.,35.)
     plt.xlim(0,360)
-    plt.title("Radar Quixeramobim - Velocity x Azimuth ({:.2f} km Range)".format((r*1490)/1000.), fontstyle='italic')
-    plt.ylabel('Velocity (m/s)')
+    plt.title("Radar Qxb Band S - Velocity x Azimuth ({:.2f} km Range)".format((r*1498)/1000.), fontstyle='italic')
+    plt.ylabel('Radial Velocity (m/s)')
     ax.set_xlabel('Azimuth (degree)')
     ax.xaxis.set_label_coords(0.5,-0.05)
     plt.legend(fontsize='10')
     #plt.show()
-    plt.savefig('Radar_Qxb_Band_S - Velocity x Azimuth ({:.2f} km Range) - Line (No Filter).png'.format((r*1490)/1000.), format='png')
+    plt.savefig('Radar_Qxb_Band_S - Velocity x Azimuth ({:.2f} km Range) - Line (No Filter).png'.format((r*1498)/1000.), format='png')
     plt.close()
 
 
@@ -121,6 +122,7 @@ def plot_image_map(radar):
                          lon_lines=radar.longitude['data'])
     display.plot_range_rings([100., 200., 300., 400.])
     display.plot_point(radar.longitude['data'][0], radar.latitude['data'][0])
+    plt.title("Funceme - Radar Qxb Band S \n Time: {:}".format(radar.time['units']))
     #plt.show()
     plt.savefig("Radar_Qxb_Band_S - Image Velocity Wind.png", format='png')
     plt.close()
@@ -136,15 +138,15 @@ def plot_graph_points_filters(radar, r):
     x = azimuth[2, :]
 
     y_ma = moving_average(y,3)
-    y_median = median(y,3)
-    #y_gauss = gauss(y,3)
+    #y_median = median(y,3)
+    y_gauss = gaussian(y)
 
     plt.figure()
     ax1 = plt.subplot(211)
     ax1.scatter(x, y_ma, lw='1', label='Moving Average')
 
     ax2 = plt.subplot(212)
-    ax2.scatter(x, y_median, lw='1', label='Median')
+    ax2.scatter(x, y_gauss, lw='1', label='Gaussian')
 
     ax1.spines['bottom'].set_position('center')
     ax2.spines['bottom'].set_position('center')
@@ -158,9 +160,9 @@ def plot_graph_points_filters(radar, r):
     ax2.set_ylim(-35.,35.)
     ax2.set_xlim(0,360)
 
-    ax1.set_title("Radar Quixeramobim - Velocity x Azimuth ({:.2f} km Range)".format((r*1490)/1000.), fontstyle='italic')
+    ax1.set_title("Radar Qxb Band S - Velocity x Azimuth ({:.2f} km Range)".format((r*1498)/1000.), fontstyle='italic')
 
-    ax2.set_ylabel('Velocity (m/s)')
+    ax2.set_ylabel('Radial Velocity (m/s)')
     ax2.set_xlabel('Azimuth (degree)')
     ax2.xaxis.set_label_coords(0.5,-0.05)
     ax2.yaxis.set_label_coords(-0.1,1.0)
@@ -169,7 +171,7 @@ def plot_graph_points_filters(radar, r):
     ax2.legend(fontsize='10')
 
     #plt.show()
-    plt.savefig("Radar_Qxb_Band_S - Velocity x Azimuth (Moving Average e Median)- ({:.2f} km Range) - Points.png".format((r*1490)/1000.), format='png')
+    plt.savefig("Radar_Qxb_Band_S - Velocity x Azimuth (Moving Average e Gaussian)- ({:.2f} km Range) - Points.png".format((r*1498)/1000.), format='png')
     plt.close()
 
 
@@ -183,15 +185,15 @@ def plot_graph_lines_filters(radar, r):
     x = azimuth[2, :]
 
     y_ma = moving_average(y,3)
-    y_median = median(y,3)
-    #y_gauss = gauss(y,3)
+    #y_median = median(y,3)
+    y_gauss = gaussian(y)
 
     plt.figure()
     ax1 = plt.subplot(211)
     ax1.plot(x, y_ma, lw='1', label='Moving Average')
 
     ax2 = plt.subplot(212)
-    ax2.plot(x, y_median, lw='1', label='Median')
+    ax2.plot(x, y_gauss, lw='1', label='Gaussian')
 
     ax1.spines['bottom'].set_position('center')
     ax2.spines['bottom'].set_position('center')
@@ -205,9 +207,9 @@ def plot_graph_lines_filters(radar, r):
     ax2.set_ylim(-35.,35.)
     ax2.set_xlim(0,360)
 
-    ax1.set_title("Radar Quixeramobim - Velocity x Azimuth ({:.2f} km Range)".format((r*1490)/1000.), fontstyle='italic')
+    ax1.set_title("Radar Qxb Band S - Velocity x Azimuth ({:.2f} km Range)".format((r*1498)/1000.), fontstyle='italic')
 
-    ax2.set_ylabel('Velocity (m/s)')
+    ax2.set_ylabel('Radial Velocity (m/s)')
     ax2.set_xlabel('Azimuth (degree)')
     ax2.xaxis.set_label_coords(0.5,-0.05)
     ax2.yaxis.set_label_coords(-0.1,1.0)
@@ -216,7 +218,7 @@ def plot_graph_lines_filters(radar, r):
     ax2.legend(fontsize='10')
 
     #plt.show()
-    plt.savefig("Radar_Qxb_Band_S - Velocity x Azimuth (Moving Average e Median)- ({:.2f} km Range).png".format((r*1490)/1000.), format='png')
+    plt.savefig("Radar_Qxb_Band_S - Velocity x Azimuth (Moving Average e Gaussian)- ({:.2f} km Range).png".format((r*1498)/1000.), format='png')
     plt.close()
 
 #@profile()
