@@ -270,8 +270,8 @@ def plot_vector_barbs(radar, r, u, v):
     plt.figure()
     plt.subplot(111, polar=True)
     plt.barbs(theta, ran, u[3,:,r], v[3,:,r], velocity_radial[3,:,r])
-    plt.show()
-    #plt.savefig('Radar_Qxb_Band_S - Barbs ({:.2f} km Range).png'.format((r*1490)/1000.), format='png')
+    #plt.show()
+    plt.savefig('Radar_Qxb_Band_S - Barbs ({:.2f} km Range) ME.png'.format((r*1498)/1000.), format='png')
     plt.close()
 
 
@@ -287,5 +287,5 @@ def plot_vector_quiver(radar, r, u, v):
     plt.subplot(111, polar=True)
     plt.quiver(theta, ran, u[3,:,r], v[3,:,r], velocity_radial[3,:,r])
     #plt.show()
-    plt.savefig('Radar_Qxb_Band_S - Quiver ({:.2f} km Range).png'.format((r*1490)/1000.), format='png')
+    plt.savefig('Radar_Qxb_Band_S - Quiver ({:.2f} km Range) ME.png'.format((r*1498)/1000.), format='png')
     plt.close()
