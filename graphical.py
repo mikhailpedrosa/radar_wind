@@ -137,13 +137,13 @@ def plot_graph_points_filters(radar, r):
     y = velocity[2,:,r]
     x = azimuth[2, :]
 
-    y_ma = moving_average(y,3)
-    #y_median = median(y,3)
+    #y_ma = moving_average(y,3)
+    y_median = median(y,3)
     y_gauss = gaussian(y)
 
     plt.figure()
     ax1 = plt.subplot(211)
-    ax1.scatter(x, y_ma, lw='1', label='Moving Average')
+    ax1.scatter(x, y_median, lw='1', label='Median')
 
     ax2 = plt.subplot(212)
     ax2.scatter(x, y_gauss, lw='1', label='Gaussian')
@@ -171,7 +171,7 @@ def plot_graph_points_filters(radar, r):
     ax2.legend(fontsize='10')
 
     #plt.show()
-    plt.savefig("Radar_Qxb_Band_S - Velocity x Azimuth (Moving Average e Gaussian)- ({:.2f} km Range) - Points.png".format((r*1498)/1000.), format='png')
+    plt.savefig("Radar_Qxb_Band_S - Velocity x Azimuth (Median e Gaussian)- ({:.2f} km Range) - Points.png".format((r*1498)/1000.), format='png')
     plt.close()
 
 
@@ -184,13 +184,13 @@ def plot_graph_lines_filters(radar, r):
     y = velocity[2,:,r]
     x = azimuth[2, :]
 
-    y_ma = moving_average(y,3)
-    #y_median = median(y,3)
+    #y_ma = moving_average(y,3)
+    y_median = median(y,3)
     y_gauss = gaussian(y)
 
     plt.figure()
     ax1 = plt.subplot(211)
-    ax1.plot(x, y_ma, lw='1', label='Moving Average')
+    ax1.plot(x, y_median, lw='1', label='Median')
 
     ax2 = plt.subplot(212)
     ax2.plot(x, y_gauss, lw='1', label='Gaussian')
@@ -218,7 +218,7 @@ def plot_graph_lines_filters(radar, r):
     ax2.legend(fontsize='10')
 
     #plt.show()
-    plt.savefig("Radar_Qxb_Band_S - Velocity x Azimuth (Moving Average e Gaussian)- ({:.2f} km Range).png".format((r*1498)/1000.), format='png')
+    plt.savefig("Radar_Qxb_Band_S - Velocity x Azimuth (Median e Gaussian)- ({:.2f} km Range).png".format((r*1498)/1000.), format='png')
     plt.close()
 
 #@profile()
@@ -287,5 +287,5 @@ def plot_vector_quiver(radar, r, u, v):
     plt.subplot(111, polar=True)
     plt.quiver(theta, ran, u[3,:,r], v[3,:,r], velocity_radial[3,:,r])
     #plt.show()
-    plt.savefig('Radar_Qxb_Band_S - Quiver ({:.2f} km Range) ME.png'.format((r*1498)/1000.), format='png')
+    plt.savefig('Radar_Qxb_Band_S - Quiver ({:.2f} km Range) No Filter.png'.format((r*1498)/1000.), format='png')
     plt.close()

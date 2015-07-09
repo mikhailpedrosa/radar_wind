@@ -14,14 +14,14 @@ if __name__ == '__main__':
     print "----Velocity-Azimuth Processing Technique----"
 
     #Range (1-253)
-    r = 166.88
-
+    r = 1
+    #166.88
     radar = read_radar()
 
     print radar.info()
     #exit()
     start = datetime.datetime.now()
-    u, v = vap(radar)
+    #u, v = vap(radar)
     #np.save('vectoru', u)
     #np.save('vectorv', v)
     #u1 = np.load('vectoru.npy')
@@ -32,10 +32,10 @@ if __name__ == '__main__':
     #plot_image_map(radar)
     #plot_graph_lines_no_filters(radar, r)
     #plot_graph_points_no_filters(radar, r)
-    #plot_graph_lines_filters(radar, r)
-    #plot_graph_points_filters(radar, r)
+    plot_graph_lines_filters(radar, r)
+    plot_graph_points_filters(radar, r)
     #plot_graph(radar, r)
-    plot_vector_barbs(radar, r, u, v)
-    plot_vector_quiver(radar, r, u, v)
+    #plot_vector_barbs(radar, r, u, v)
+    #plot_vector_quiver(radar, r, u, v)
 
     print '%i s' % dif.seconds
