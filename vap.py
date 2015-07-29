@@ -3,7 +3,6 @@ __description__ = 'Velocity-Azimuth Processing Technique'
 __version__ = '0.1'
 __date__ = '13/04/2015'
 
-import math
 import numpy as np
 from filters import vap_moving_average, vap_median, vap_gaussian
 from memory_profiler import profile

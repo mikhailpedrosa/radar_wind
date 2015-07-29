@@ -25,7 +25,7 @@ def vap_moving_average(values, window_size):
     for elevation in np.arange(10):
         for rang in np.arange(253):
             for azimuth in np.arange(360):
-                matrix[elevation, azimuth, rang] = np.nansum(values[elevation, azimuth:(azimuth + window_size), rang])
+                matrix[elevation, azimuth, rang] = np.nansum(values[elevation, azimuth - ((window_size - 1) / 2) :azimuth + ((window_size - 1) / 2), rang - ((window_size - 1) / 2):rang + ((window_size - 1) / 2)])
     return matrix / float(window_size)
 
 
