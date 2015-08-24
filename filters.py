@@ -12,7 +12,7 @@ from memory_profiler import profile
 
 
 #@profile()
-def vap_moving_average(values, window_size):
+def movingAverage2D(values, window_size):
     """
 
     :param values:
@@ -25,12 +25,12 @@ def vap_moving_average(values, window_size):
     for elevation in np.arange(10):
         for rang in np.arange(253):
             for azimuth in np.arange(360):
-                matrix[elevation, azimuth, rang] = np.nansum(values[elevation, azimuth - ((window_size - 1) / 2) :azimuth + ((window_size - 1) / 2), rang - ((window_size - 1) / 2):rang + ((window_size - 1) / 2)])
+                matrix[elevation, azimuth, rang] = np.nansum(values[elevation, azimuth - ((window_size - 1) / 2) : azimuth + ((window_size - 1) / 2), rang - ((window_size - 1) / 2) : rang + ((window_size - 1) / 2)])
     return matrix / float(window_size)
 
 
 #@profile()
-def vap_median(values, window_size):
+def median2D(values, window_size):
     """
 
     :param values:
@@ -43,30 +43,35 @@ def vap_median(values, window_size):
     for elevation in np.arange(10):
         for rang in np.arange(253):
             for azimuth in np.arange(360):
-                matrix[elevation, azimuth, rang] = np.nanmedian(values[elevation, azimuth:(azimuth + window_size), rang])
+                matrix[elevation, azimuth, rang] = np.nanmedian(values[elevation, azimuth - ((window_size - 1) / 2) : azimuth + ((window_size - 1) / 2), rang - ((window_size - 1) / 2) : rang + ((window_size - 1) / 2)])
     return matrix / float(window_size)
 
 
 #@profile()
-def vap_gaussian(values, window_size):
+def gaussian2D(values, window_size):
     """
 
     :param values:
     :param window_size:
     :return:
     """
-    return
+
+    matrix = np.zeros((10, 360, 253))
+
+    for elevation in np.arange(10):
+        for rang in np.arange(253):
+            for azimuth in np.arange(360):
+                matrix[elevation, azimuth, rang] = np.nanmedian(values[elevation, azimuth - ((window_size - 1) / 2) : azimuth + ((window_size - 1) / 2), rang - ((window_size - 1) / 2) : rang + ((window_size - 1) / 2)])
+    return matrix / float(window_size)
 
 #@profile()
-def moving_average(values, window_size):
+def movingAverage1D(values, window_size):
     """
 
     :param values:
     :param window_size:
     :return:
     """
-    #window = np.ones(window_size)/float(window_size)
-    #np.convolve(values, window, 'same')
     matrix = np.zeros((len(values),))
 
     for index in np.arange(len(values)):
@@ -76,7 +81,7 @@ def moving_average(values, window_size):
 
 
 #@profile()
-def median(values, window_size):
+def median1D(values, window_size):
     """
 
     :param values:
@@ -92,7 +97,7 @@ def median(values, window_size):
 
 
 #@profile()
-def gaussian(values):
+def gaussian1D(values):
     """
 
     :param values:

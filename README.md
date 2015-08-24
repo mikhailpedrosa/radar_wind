@@ -21,3 +21,8 @@ REFERENCE
 11. http://ww2010.atmos.uiuc.edu/%28Gh%29/guides/rs/rad/ptrn/ptrn1.rxml
 12. https://ams.confex.com/ams/95Annual/webprogram/Paper262779.html
 13. http://www.swharden.com/blog/2008-11-17-linear-data-smoothing-in-python/
+14. http://www.iag.usp.br/~agg_1400200/moddata/METEOROLOGIA/5_Vento_completo.pdf
+15. http://www.fpcolumbofilia.pt/meteo/modelocomovento.htm
+16. http://www.knmi.nl/~beekhuis/rad_doppler.html
+17. http://www.bom.gov.au/australia/radar/about/how_doppler_winds_are_portrayed.shtml
+18. http://qk.cams.cma.gov.cn/jams/ch/reader/view_abstract.aspx?file_no=20000104

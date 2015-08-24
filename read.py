@@ -9,7 +9,7 @@ import glob
 from graphical import plot_image_no_map
 from memory_profiler import profile
 
-DIR='/home/mikhail/ProjetosGIT/radar_wind-field/files_radar/'
+DIR='/home/mikhail/ProjetosGIT/radar_wind/'
 
 #@profile()
 def read_raws():
@@ -29,8 +29,7 @@ def read_raws():
 #@profile()
 def read_radar():
     filename = 'XXX140331061059.RAW1JMJ'
-    #filename = 'XXX140331032932.RAW1JLB'
     local_dir = os.path.dirname(__file__)
-    radar = pyart.io.read_sigmet(filename)
+    radar = pyart.io.read(filename)
 
     return radar

@@ -4,6 +4,7 @@ __version__ = '0.1'
 __date__ = '13/04/2015'
 
 import pyart
+import wradlib as wrl
 import matplotlib.pyplot as plt
 from filters import *
 from memory_profiler import profile
@@ -31,9 +32,9 @@ def plot_image_no_map(radar):
     display.plot_range_rings([100., 200., 300., 400.])
     #display.plot_cross_hair(radar.latitude['data'], radar.longitude['data'] )
     #display.plot_point(radar.longitude['data'][0], radar.latitude['data'][0])
-    #plt.show()
-    plt.title("Funceme - Radar Qxb Band S \n Time: {:}".format(radar.time['units']))
-    plt.savefig('Radar_Qxb_Band_S - Image Velocity Wind (No Map).png', format='png')
+    plt.show()
+    #plt.title("Funceme - Radar Qxb Band S \n Time: {:}".format(radar.time['units']))
+    #plt.savefig('Radar_Qxb_Band_S - Image Velocity Wind (No Map).png', format='png')
     plt.close()
 
 
@@ -184,41 +185,41 @@ def plot_graph_lines_filters(radar, r):
     y = velocity[2,:,r]
     x = azimuth[2, :]
 
-    #y_ma = moving_average(y,3)
-    y_median = median(y,3)
-    y_gauss = gaussian(y)
+    y_ma = moving_average(y,5)
+    #y_median = median(y,3)
+    #y_gauss = gaussian(y)
 
     plt.figure()
-    ax1 = plt.subplot(211)
-    ax1.plot(x, y_median, lw='1', label='Median')
+    ax1 = plt.subplot(111)
+    ax1.plot(x, y_ma, lw='1', label='Median')
 
-    ax2 = plt.subplot(212)
-    ax2.plot(x, y_gauss, lw='1', label='Gaussian')
+    #ax2 = plt.subplot(212)
+    #ax2.plot(x, y_gauss, lw='1', label='Gaussian')
 
     ax1.spines['bottom'].set_position('center')
-    ax2.spines['bottom'].set_position('center')
+    #ax2.spines['bottom'].set_position('center')
 
     ax1.grid()
-    ax2.grid()
+    #ax2.grid()
 
     ax1.set_ylim(-35.,35.)
     ax1.set_xlim(0,360)
 
-    ax2.set_ylim(-35.,35.)
-    ax2.set_xlim(0,360)
+    #ax2.set_ylim(-35.,35.)
+    #ax2.set_xlim(0,360)
 
     ax1.set_title("Radar Qxb Band S - Velocity x Azimuth ({:.2f} km Range)".format((r*1498)/1000.), fontstyle='italic')
 
-    ax2.set_ylabel('Radial Velocity (m/s)')
-    ax2.set_xlabel('Azimuth (degree)')
-    ax2.xaxis.set_label_coords(0.5,-0.05)
-    ax2.yaxis.set_label_coords(-0.1,1.0)
+    # ax2.set_ylabel('Radial Velocity (m/s)')
+    # ax2.set_xlabel('Azimuth (degree)')
+    # ax2.xaxis.set_label_coords(0.5,-0.05)
+    # ax2.yaxis.set_label_coords(-0.1,1.0)
 
     ax1.legend(fontsize='10')
-    ax2.legend(fontsize='10')
+    #ax2.legend(fontsize='10')
 
-    #plt.show()
-    plt.savefig("Radar_Qxb_Band_S - Velocity x Azimuth (Median e Gaussian)- ({:.2f} km Range).png".format((r*1498)/1000.), format='png')
+    plt.show()
+    #plt.savefig("Radar_Qxb_Band_S - Velocity x Azimuth (Median e Gaussian)- ({:.2f} km Range).png".format((r*1498)/1000.), format='png')
     plt.close()
 
 #@profile()
@@ -230,9 +231,9 @@ def plot_graph(radar, r):
     y = velocity[2,:,r]
     x = azimuth[2, :]
 
-    #y = moving_average(y,3)
-    #y = median(y,3)
-    y = gaussian(y)
+    #y = movingAverage1D(y,3)
+    #y = median1D(y,3)
+    y = gaussian1D(y)
     #y = moving_triangle(y)
     print y
     figure = plt.figure()
@@ -270,8 +271,8 @@ def plot_vector_barbs(radar, r, u, v):
     plt.figure()
     plt.subplot(111, polar=True)
     plt.barbs(theta, ran, u[3,:,r], v[3,:,r], velocity_radial[3,:,r])
-    #plt.show()
-    plt.savefig('Radar_Qxb_Band_S - Barbs ({:.2f} km Range) ME.png'.format((r*1498)/1000.), format='png')
+    plt.show()
+    #plt.savefig('Radar_Qxb_Band_S - Barbs ({:.2f} km Range) ME.png'.format((r*1498)/1000.), format='png')
     plt.close()
 
 
@@ -286,6 +287,37 @@ def plot_vector_quiver(radar, r, u, v):
     plt.figure()
     plt.subplot(111, polar=True)
     plt.quiver(theta, ran, u[3,:,r], v[3,:,r], velocity_radial[3,:,r])
-    #plt.show()
-    plt.savefig('Radar_Qxb_Band_S - Quiver ({:.2f} km Range) No Filter.png'.format((r*1498)/1000.), format='png')
+    plt.show()
+    #plt.savefig('Radar_Qxb_Band_S - Quiver ({:.2f} km Range) No Filter.png'.format((r*1498)/1000.), format='png')
     plt.close()
+
+
+def faz_figura_temporaria(data, azimuths, ranges):
+    ##### TEMP
+
+    # mask data array for better presentation
+    mask_ind = np.where(data <= np.nanmin(data))
+    data[mask_ind] = np.nan
+    ma = np.ma.array(data, mask=np.isnan(data))
+
+    # plot
+    ax, caax, paax, pm = wrl.vis.plot_cg_ppi(ma, refrac=False, r=ranges/1000., az=azimuths, autoext=True,
+                                             vmin=-20., vmax=20.)
+    ax = wrl.vis.plot_ppi_crosshair(site=(0,0), ranges=[100,200,300,380],ax=ax)
+
+    title = "FUNCEME Band S Wind Radar Quixeramobim-CE"
+    titleobj = plt.title(title)
+    titleobj.set_y(1.05)
+
+    cbar = plt.gcf().colorbar(pm, pad=0.075)
+    cbar.set_label('radial velocity [m/s]')
+
+    caax.set_xlabel("Distance from radar (km)")
+
+    caax.set_ylabel("Distance from radar (km)")
+
+    plt.text(1.0, 1.05, 'azimuth', transform=caax.transAxes, va='bottom', ha='right')
+
+    #pl.savefig("clutter_mask.png")
+    #pl.close()
+    plt.show()

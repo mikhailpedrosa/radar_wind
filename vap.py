@@ -4,7 +4,6 @@ __version__ = '0.1'
 __date__ = '13/04/2015'
 
 import numpy as np
-from filters import vap_moving_average, vap_median, vap_gaussian
 from memory_profiler import profile
 
 ELEVATION_LIST = {
@@ -12,14 +11,17 @@ ELEVATION_LIST = {
     'S': ["-0.5", "0.0", "0.5", "1.0", "2.0", "3.0", "4.0", "5.5", "7.0", "8.5"],
 }
 
-
 #@profile()
-def vap(radar):
+def vap(radar, velocity_radial, nsweeps, nrays, ngates):
     """
     Implementacao da tecnica de Processamento VAP (Velocity-Azimuth Processing)
     Implementation of the technical processing of VAP (Velocity-Azimuth Processing)
     :param radar: Radar object - Objeto Radar
-    :return:
+    :param velocity_radial: variable velocity
+    :param nsweeps: elevations
+    :param nrays: azimuths
+    :param ngates: ranges
+    :return: Vectors u and v
     """
     #The horizontal wind components u and v
     u = np.zeros((10,360,253))
@@ -30,19 +32,7 @@ def vap(radar):
     v_1 = np.zeros((10,360,253))
     v_2 = np.zeros((10,360,253))
 
-
-    velocity_radial = radar.fields['velocity']['data'].reshape(10,360,253)
-
-    #velocity_radial = vap_moving_average(velocity_radial, 3)
-    #velocity_radial = vap_median(velocity_radial, 3)
-    #velocity_radial = vap_gaussian(velocity_radial, 3)
-
     azimuth = radar.azimuth['data']
-    #ca = velocity_ca(velocity_radial)
-    #cb = velocity_cb(velocity_radial)
-    nsweeps = radar.nsweeps
-    nrays = radar.nrays / 10
-    ngates = radar.ngates
 
     print nsweeps, nrays, ngates
 
