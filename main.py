@@ -20,8 +20,9 @@ if __name__ == '__main__':
 
     #Range (1-253)
     r = 67
-    e = 2 #Elevation 0.5
+    e = 3 #Elevation 0.5
     radar = read_radar()
+    print radar.info()
     start = datetime.datetime.now()
 
     _sweep_number = radar.nsweeps
@@ -36,38 +37,38 @@ if __name__ == '__main__':
 
     # Filters OpenCV (Image Smoothing) - Gaussian, Median e Average
 
-    velocity_radial_f = cv2.GaussianBlur(velocity_radial, (3,3), 0)
+    #velocity_radial_f = cv2.GaussianBlur(velocity_radial, (3,3), 0)
     velocity_radial_f = cv2.medianBlur(velocity_radial, 3)
-    velocity_radial_f = cv2.blur(velocity_radial_f, 3)
+    #velocity_radial_f = cv2.blur(velocity_radial, (3,3))
 
     # Methods - Moving_Average, Median e Average
 
     #velocity_radial_f = movingAverage2D(velocity_radial,3)
     #velocity_radial_f = median2D(velocity_radial,3)
-    #velocity_radial_f = gaussian2D('velocity_radial.npy')
+    #velocity_radial_f = gaussian2D(velocity_radial,3)
 
     # Velocity-Azimuth Processing Technique
-    u, v = vap(radar, velocity_radial_f, _sweep_number, _azimuth, _range)
-    np.save('vectoru', u)
-    np.save('vectorv', v)
-    #u1 = np.load('vectoru.npy')
-    #v1 = np.load('vectorv.npy')
+    #u, v = vap(radar, velocity_radial_f, _sweep_number, _azimuth, _range)
+    #np.save('vectoru', u)
+    #np.save('vectorv', v)
+    u = np.load('vectoru.npy')
+    v = np.load('vectorv.npy')
 
     # Plot Image
 
     #print np.nanmax(velocity_radial[0,:,:]), "\n", np.nanmax(velocity_radial_f[0,:,:]), "\n", np.nanmax(velocity_radial[0,:,:] - velocity_radial_f[0,:,:])
     #dif = velocity_radial[0,:,:] - velocity_radial_f[0,:,:]
-    faz_figura_temporaria(velocity_radial_f[e,:,:], azimuth[e,:], ranges)
+    #faz_figura_temporaria(velocity_radial_f[e,:,:], azimuth[e,:], ranges)
     dif = datetime.datetime.now() - start
     print '%i s' % dif.seconds
-    exit()
+
 
     #plot_image_no_map(radar)
     #plot_image_map(radar)
     #plot_graph_lines_no_filters(radar, r)
     #plot_graph_points_no_filters(radar, r)
-    plot_graph_lines_filters(radar, r)
+    #plot_graph_lines_filters(radar, r)
     #plot_graph_points_filters(radar, r)
     #plot_graph(radar, r)
-    #plot_vector_barbs(radar, r, u1, v1)
+    plot_vector_barbs(velocity_radial_f, azimuth, ranges, r, e, u, v)
     #plot_vector_quiver(radar, r, u1, v1)

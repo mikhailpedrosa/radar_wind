@@ -139,8 +139,8 @@ def plot_graph_points_filters(radar, r):
     x = azimuth[2, :]
 
     #y_ma = moving_average(y,3)
-    y_median = median(y,3)
-    y_gauss = gaussian(y)
+    y_median = median1D(y,3)
+    y_gauss = gaussian2D(y)
 
     plt.figure()
     ax1 = plt.subplot(211)
@@ -185,7 +185,7 @@ def plot_graph_lines_filters(radar, r):
     y = velocity[2,:,r]
     x = azimuth[2, :]
 
-    y_ma = moving_average(y,5)
+    y_ma = movingAverage1D(y,5)
     #y_median = median(y,3)
     #y_gauss = gaussian(y)
 
@@ -261,16 +261,13 @@ def plot_graph(radar, r):
 
 
 #@profile()
-def plot_vector_barbs(radar, r, u, v):
-    azimuth =  radar.azimuth['data'].reshape(10,360)
-    rang = radar.range['data']
-    velocity_radial = radar.fields['velocity']['data'].reshape(10,360,253)
+def plot_vector_barbs(velocity_radial_f, azimuth, ranges, r, e, u, v):
 
-    theta, ran = np.meshgrid(azimuth[3,:], rang[r])
+    ran, theta = np.meshgrid(ranges[r], azimuth[e,:])
 
     plt.figure()
     plt.subplot(111, polar=True)
-    plt.barbs(theta, ran, u[3,:,r], v[3,:,r], velocity_radial[3,:,r])
+    plt.quiver(u[e,:,r], v[e,:,r], ran, theta)
     plt.show()
     #plt.savefig('Radar_Qxb_Band_S - Barbs ({:.2f} km Range) ME.png'.format((r*1498)/1000.), format='png')
     plt.close()
@@ -297,9 +294,11 @@ def faz_figura_temporaria(data, azimuths, ranges):
 
     # mask data array for better presentation
     mask_ind = np.where(data <= np.nanmin(data))
+    print mask_ind
     data[mask_ind] = np.nan
+    print data[mask_ind]
     ma = np.ma.array(data, mask=np.isnan(data))
-
+    print ma
     # plot
     ax, caax, paax, pm = wrl.vis.plot_cg_ppi(ma, refrac=False, r=ranges/1000., az=azimuths, autoext=True,
                                              vmin=-20., vmax=20.)
