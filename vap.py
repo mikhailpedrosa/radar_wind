@@ -12,7 +12,7 @@ ELEVATION_LIST = {
 }
 
 #@profile()
-def vap(radar, velocity_radial, nsweeps, nrays, ngates):
+def vap(radar, velocity_radial, nsweeps, nrays, ngates, e):
     """
     Implementacao da tecnica de Processamento VAP (Velocity-Azimuth Processing)
     Implementation of the technical processing of VAP (Velocity-Azimuth Processing)
@@ -24,31 +24,33 @@ def vap(radar, velocity_radial, nsweeps, nrays, ngates):
     :return: Vectors u and v
     """
     #The horizontal wind components u and v
-    u = np.zeros((10,360,253))
-    v = np.zeros((10,360,253))
+    u = np.zeros((1,360,253))
+    v = np.zeros((1,360,253))
 
-    u_1 = np.zeros((10,360,253))
-    u_2 = np.zeros((10,360,253))
-    v_1 = np.zeros((10,360,253))
-    v_2 = np.zeros((10,360,253))
+    u_1 = np.zeros((1,360,253))
+    u_2 = np.zeros((1,360,253))
+    v_1 = np.zeros((1,360,253))
+    v_2 = np.zeros((1,360,253))
 
     azimuth = radar.azimuth['data']
+    matriz = np.zeros((1,360,253))
 
     print nsweeps, nrays, ngates
 
-    for elevation in range(nsweeps-1):
-        for theta in range(nrays-1):
-            for rang in range(ngates-1):
-                u_1[elevation, theta, rang] = np.multiply(velocity_radial[elevation, theta+1, rang], np.cos(azimuth[theta] - 1))
-                u_2[elevation, theta, rang] = np.multiply(velocity_radial[elevation, theta-1, rang], np.cos(azimuth[theta] + 1))
+    for theta in range(nrays-1):
+        for rang in range(ngates-1):
+            u_1[0, theta, rang] = np.multiply(velocity_radial[0, theta + 1, rang], np.cos(azimuth[theta] - 1))
+            u_2[0, theta, rang] = np.multiply(velocity_radial[0, theta - 1, rang], np.cos(azimuth[theta] + 1))
 
-                u[elevation, theta, rang] = (u_1[elevation, theta, rang] - u_2[elevation, theta, rang]) / float(np.sin(2))
+            u[0, theta, rang] = (u_1[0, theta, rang] - u_2[0, theta, rang]) / float(np.sin(2))
 
-                #print elevation, theta, rang, "\n", u_1[elevation, theta, rang], "\n", u_2[elevation, theta, rang], "\n", u[elevation, theta, rang]
+            # print elevation, theta, rang, "\n", u_1[elevation, theta, rang], "\n", u_2[elevation, theta, rang], "\n", u[elevation, theta, rang]
 
-                v_1[elevation, theta, rang] = np.multiply(velocity_radial[elevation, theta-1, rang], np.sin(azimuth[theta] + 1))
-                v_2[elevation, theta, rang] = np.multiply(velocity_radial[elevation, theta+1, rang], np.sin(azimuth[theta] - 1))
+            v_1[0, theta, rang] = np.multiply(velocity_radial[0, theta - 1, rang], np.sin(azimuth[theta] + 1))
+            v_2[0, theta, rang] = np.multiply(velocity_radial[0, theta + 1, rang], np.sin(azimuth[theta] - 1))
 
-                v[elevation, theta, rang] = (v_1[elevation,theta,rang] - v_2[elevation,theta,rang]) / float(np.sin(2))
-                #print elevation, theta, rang
-    return u, v
+            v[0, theta, rang] = (v_1[0, theta, rang] - v_2[0, theta, rang]) / float(np.sin(2))
+
+            matriz[0,theta, rang] = u[0, theta, rang] * np.sin(theta) + v[0, theta, rang] * np.cos(theta)
+            # print elevation, theta, rang
+    return matriz, u, v

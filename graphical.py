@@ -267,23 +267,29 @@ def plot_vector_barbs(velocity_radial_f, azimuth, ranges, r, e, u, v):
 
     plt.figure()
     plt.subplot(111, polar=True)
-    plt.quiver(u[e,:,r], v[e,:,r], ran, theta)
+    plt.barbs(u[e,:,r], v[e,:,r], ran, theta)
     plt.show()
     #plt.savefig('Radar_Qxb_Band_S - Barbs ({:.2f} km Range) ME.png'.format((r*1498)/1000.), format='png')
     plt.close()
 
 
 #@profile()
-def plot_vector_quiver(radar, r, u, v):
-    azimuth =  radar.azimuth['data'].reshape(10,360)
-    rang = radar.range['data']
-    velocity_radial = radar.fields['velocity']['data'].reshape(10,360,253)
+def plot_vector_quiver(velocity_radial, azimuth, ranges, r, e, matriz, u, v):
 
-    theta, ran = np.meshgrid(azimuth[3,:], rang[r])
+    print azimuth.shape, ranges.shape
+    #ranges = ranges/1000
+    ran, theta = np.meshgrid(ranges/1000, azimuth[e,:])
+    x = ran * np.cos(theta)
+    y = ran * np.sin(theta)
+
+    m = matriz[0,ran * np.sin(theta),ran * np.cos(theta)]
+    print theta.shape, ran.shape
 
     plt.figure()
-    plt.subplot(111, polar=True)
-    plt.quiver(theta, ran, u[3,:,r], v[3,:,r], velocity_radial[3,:,r])
+    # plt.subplot(111, polar=True)
+    # plt.quiver(theta[:,0:250:50], ran[:,0:250:50], u[0,:,0:250:50], v[0,:,0:250:50])
+    plt.subplot(111)
+    plt.quiver(x, y, m)
     plt.show()
     #plt.savefig('Radar_Qxb_Band_S - Quiver ({:.2f} km Range) No Filter.png'.format((r*1498)/1000.), format='png')
     plt.close()

@@ -22,7 +22,7 @@ if __name__ == '__main__':
     r = 67
     e = 3 #Elevation 0.5
     radar = read_radar()
-    print radar.info()
+
     start = datetime.datetime.now()
 
     _sweep_number = radar.nsweeps
@@ -48,11 +48,13 @@ if __name__ == '__main__':
     #velocity_radial_f = gaussian2D(velocity_radial,3)
 
     # Velocity-Azimuth Processing Technique
-    #u, v = vap(radar, velocity_radial_f, _sweep_number, _azimuth, _range)
+    matriz, u, v = vap(radar, velocity_radial_f, _sweep_number, _azimuth, _range, e)
+    print matriz
+
     #np.save('vectoru', u)
     #np.save('vectorv', v)
-    u = np.load('vectoru.npy')
-    v = np.load('vectorv.npy')
+    #u = np.load('vectoru.npy')
+    #v = np.load('vectorv.npy')
 
     # Plot Image
 
@@ -70,5 +72,5 @@ if __name__ == '__main__':
     #plot_graph_lines_filters(radar, r)
     #plot_graph_points_filters(radar, r)
     #plot_graph(radar, r)
-    plot_vector_barbs(velocity_radial_f, azimuth, ranges, r, e, u, v)
-    #plot_vector_quiver(radar, r, u1, v1)
+    #plot_vector_barbs(velocity_radial_f, azimuth, ranges, r, e, u, v)
+    plot_vector_quiver(velocity_radial_f, azimuth, ranges, r, e, matriz, u, v)
