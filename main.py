@@ -38,18 +38,18 @@ if __name__ == '__main__':
     # Filters OpenCV (Image Smoothing) - Gaussian, Median e Average
 
     #velocity_radial_f = cv2.GaussianBlur(velocity_radial, (3,3), 0)
-    velocity_radial_f = cv2.medianBlur(velocity_radial, 3)
+    #velocity_radial_f = cv2.medianBlur(velocity_radial, 3)
     #velocity_radial_f = cv2.blur(velocity_radial, (3,3))
 
     # Methods - Moving_Average, Median e Average
 
     #velocity_radial_f = movingAverage2D(velocity_radial,3)
     #velocity_radial_f = median2D(velocity_radial,3)
-    #velocity_radial_f = gaussian2D(velocity_radial,3)
+    velocity_radial_f = gaussian2D(velocity_radial,3)
 
     # Velocity-Azimuth Processing Technique
-    matriz, u, v = vap(radar, velocity_radial_f, _sweep_number, _azimuth, _range, e)
-    print matriz
+    #matriz, u, v = vap(radar, velocity_radial_f, _sweep_number, _azimuth, _range, e)
+    #print matriz
 
     #np.save('vectoru', u)
     #np.save('vectorv', v)
@@ -60,10 +60,10 @@ if __name__ == '__main__':
 
     #print np.nanmax(velocity_radial[0,:,:]), "\n", np.nanmax(velocity_radial_f[0,:,:]), "\n", np.nanmax(velocity_radial[0,:,:] - velocity_radial_f[0,:,:])
     #dif = velocity_radial[0,:,:] - velocity_radial_f[0,:,:]
-    #faz_figura_temporaria(velocity_radial_f[e,:,:], azimuth[e,:], ranges)
+    faz_figura_temporaria(velocity_radial_f[e,:,:], azimuth[e,:], ranges)
     dif = datetime.datetime.now() - start
     print '%i s' % dif.seconds
-
+    exit()
 
     #plot_image_no_map(radar)
     #plot_image_map(radar)

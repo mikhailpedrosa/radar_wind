@@ -48,13 +48,21 @@ def median2D(values, window_size):
 
 
 #@profile()
-def gaussian2D(values, window_size):
+def gaussian2D(values, shape, sigma):
     """
 
     :param values:
     :param window_size:
     :return:
     """
+
+    m,n = [(ss-1.)/2. for ss in shape]
+    y,x = np.ogrid[-m:m+1,-n:n+1]
+    mask = np.exp(-(x*x + y*y) / (2.*sigma*sigma))
+    mask[mask < np.finfo(np.dtype(mask)).eps*np.max(mask)] = 0
+    summask = np.sum(mask)
+    if summask != 0:
+        mask /= summask
 
     matrix = np.zeros((10, 360, 253))
 
